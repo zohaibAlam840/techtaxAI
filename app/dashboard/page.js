@@ -5,6 +5,7 @@ import Image from 'next/image';
 import logo from '../assets/1.png'
 import user from '../assets/user.png'
 import more from '../assets/more.png'
+import Link from 'next/link';
 
 
 export default function HomePage() {
@@ -64,9 +65,9 @@ export default function HomePage() {
           <span>Upload</span>
           <span>File Type</span>
           <span>Reviewer</span>
-          <span>Tax Map Progress</span>
-          <span>Data Audit Progress</span>
-          <span>E-file Progress</span>
+          <span className='text-blue-300 hover:text-blue-600 transition-all'><Link href="/dashboard/taxMap">Tax Map Progress</Link></span>
+          <span className='text-blue-300 hover:text-blue-600 transition-all'><Link href={'/dashboard/dataAudit'}>Data Audit Progress</Link></span>
+          <span className='text-blue-300 hover:text-blue-600 transition-all'><Link href={'/dashboard/eFile'}>E-file Progress</Link></span>
           <span>Options</span>
         </div>
 
