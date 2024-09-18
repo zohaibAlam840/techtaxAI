@@ -54,7 +54,7 @@ export default function HomePage() {
         </div>
         <Image src={user} className='w-10 h-10 absolute right-20'/>
       </div>
-      <div className="max-w-screen w-screen bg-gray-200 ">
+      <div className="w-full bg-gray-200 ">
         
         {/* Top Section: Year & User Type */}
 
