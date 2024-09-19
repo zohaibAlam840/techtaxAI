@@ -3,10 +3,10 @@ const HeroSection = () => {
     <div className="relative h-[85vh] px-10 bg-gray-100">
       {/* Hero content */}
       <div className="relative z-10 flex flex-col items-center justify-center py-24">
-        <h1 className="text-[60px] md:w-[70%] font-bold text-center text-blue-900">
+        <h1 className="text-[60px] md:w-[80%] font-bold text-center text-darkBlue">
           File Your Taxes with Ease, Just Once a Year.
         </h1>
-        <p className="mt-4 text-lg text-center text-gray-600 max-w-lg mx-auto">
+        <p className="mt-4 text-base text-center text-gray-600 max-w-lg mx-auto">
           Upload, review, and file your taxes in minutes with our AI-powered
           platform. Fast, easy, and secure.
         </p>

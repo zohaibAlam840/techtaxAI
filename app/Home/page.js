@@ -1,4 +1,5 @@
 import AboutUs from "@/Components/AboutUs";
+import Footer from "@/Components/Footer";
 import HeroSection from "@/Components/HeroSection";
 import Services from "@/Components/Services";
 import StartJourney from "@/Components/StartJourney";
@@ -11,6 +12,7 @@ export default function LandingPage() {
       <Services />
       <AboutUs />
       <StartJourney />
+      <Footer />
     </div>
   );
 }

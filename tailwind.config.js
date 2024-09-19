@@ -9,6 +9,7 @@ module.exports = {
     extend: {
       colors: {
         aliceBlue: "#f0f8ff", // Add AliceBlue to Tailwind's color palette
+        darkBlue: "#080F44", // for main text
       },
     },
   },

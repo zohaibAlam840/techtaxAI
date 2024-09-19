@@ -8,14 +8,14 @@ const Services = () => {
       <section className="py-4 px-10">
         <div className="text-center mb-12">
           <h2 className="text-xl text-blue-600 font-semibold">SERVICES</h2>
-          <h1 className="text-4xl font-bold text-blue-900">What We Offer</h1>
+          <h1 className="text-4xl font-bold text-darkBlue">What We Offer</h1>
           <p className="mt-4 text-lg text-gray-600">
             AI-Powered Tax Preparation
           </p>
         </div>
 
         {/* Grid Layout for Services */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 ">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm ">
           {/* Service 1 */}
           <div className="bg-gray-100 rounded-lg shadow-lg p-8 text-center flex flex-col">
             <i className="ri-upload-cloud-2-line text-5xl text-blue-600 mb-4"></i>
@@ -59,7 +59,7 @@ const Services = () => {
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-20">
           {/* Text Section */}
           <div className="flex flex-col justify-center">
-            <h1 className="text-4xl font-bold text-blue-900 leading-snug">
+            <h1 className="text-4xl font-bold text-darkBlue leading-snug">
               Tailored Solutions for Your Unique Position
             </h1>
             <p className="text-gray-600 mt-2 text-sm">

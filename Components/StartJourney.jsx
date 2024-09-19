@@ -4,10 +4,13 @@ import wavy2 from "../app/assets/wavy2.jpg";
 export default function StartJourney() {
   return (
     <section
-      className="relative bg-cover bg-center h-screen flex flex-col justify-center items-center text-center"
+      className="relative bg-cover bg-center h-screen flex flex-col justify-center items-center text-center my-20"
       style={{ backgroundImage: `url(${wavy2.src})` }}
     >
-      <div className="absolute inset-0 bg-black opacity-50"></div>{" "}
+      <div
+        className="absolute inset-0 opacity-70"
+        style={{ backgroundColor: "#0A284B" }}
+      ></div>{" "}
       {/* Overlay for background dimming */}
       <div className="relative z-10 text-white">
         <h2 className="text-lg tracking-wide uppercase mb-4 font-bold">

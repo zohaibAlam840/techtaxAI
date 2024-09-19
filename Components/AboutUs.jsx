@@ -18,7 +18,7 @@ export default function AboutUs() {
         </div>
         {/* Text Section */}
         <div className="flex flex-col justify-center">
-          <h1 className="text-4xl font-bold text-blue-900 leading-snug">
+          <h1 className="text-4xl font-bold text-darkBlue leading-snug">
             About Us
           </h1>
           <p className="text-gray-600 mt-2 text-sm">
