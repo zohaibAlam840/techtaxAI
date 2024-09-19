@@ -8,8 +8,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        aliceBlue: "#f0f8ff", // Add AliceBlue to Tailwind's color palette
       },
     },
   },
