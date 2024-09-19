@@ -1,4 +1,4 @@
-// pages/index.js
+
 'use client'
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
@@ -7,32 +7,30 @@ import user from '../assets/user.png'
 import more from '../assets/more.png'
 import Link from 'next/link';
 
-
+//sorry
 export default function HomePage() {
   const [selectedYear, setSelectedYear] = useState('2024');
   const [userType, setUserType] = useState('Individual');
   const [selectedFile, setSelectedFile] = useState(null);
-  const [filePreview, setFilePreview] = useState(null); // Preview for images
+  const [filePreview, setFilePreview] = useState(null); 
 
-  // Function to handle file input change
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
 
-    // If the file is an image, set the preview
+
     if (file && file.type.startsWith('image/')) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setFilePreview(reader.result); // Set image preview data URL
+        setFilePreview(reader.result); 
       };
       reader.readAsDataURL(file);
     } else {
-      setFilePreview(null); // Reset preview if it's not an image
+      setFilePreview(null);
     }
   };
   
   useEffect(() => {
-    // Trigger progress bar animation on page load
     const progressCircles = document.querySelectorAll('.progress-circle');
     progressCircles.forEach((circle) => {
       const radius = circle.r.baseVal.value;
@@ -58,7 +56,6 @@ export default function HomePage() {
               className="border border-gray-300 rounded-md p-3 text-lg">
               <option value="2024">2024</option>
               <option value="2023">2023</option>
-              {/* Add more years as needed */}
             </select>
 
             <select
@@ -67,7 +64,7 @@ export default function HomePage() {
               className="border border-gray-300 rounded-md p-3 text-lg">
               <option value="Individual">Individual</option>
               <option value="Business">Business</option>
-              {/* Add more user types as needed */}
+
             </select>
           </div>
         </div>
@@ -75,10 +72,7 @@ export default function HomePage() {
       </div>
       <div className="w-full bg-gray-200 ">
         
-        {/* Top Section: Year & User Type */}
 
-
-        {/* Table Headers (Non-clickable) */}
         <div className="grid grid-cols-1 md:grid-cols-8 gap-4 text-center mb-8 font-semibold p-5 bg-white text-gray-500">
           <span>Tax Documents</span>
           <span>Upload</span>
@@ -90,10 +84,9 @@ export default function HomePage() {
           <span>Options</span>
         </div>
 
-        {/* Progress Indicators Section */}
+
         <div className="grid grid-cols-1 md:grid-cols-8 gap-8 mb-12 items-center p-5 bg-white">
-          
-          {/* Static Icons */}
+
           <div className="flex flex-col items-center space-y-2">
             <svg className="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path strokeLinecap="round" strokeLinejoin="round" d="M7 16v-4a4 4 0 014-4h6"></path>
@@ -116,7 +109,6 @@ export default function HomePage() {
             <span className="text-sm">Self</span>
           </div>
 
-          {/* Progress Bars */}
           <div className="flex flex-col items-center space-y-2">
             <div className="relative">
               <svg className="w-12 h-12 text-blue-500" viewBox="0 0 100 100">
@@ -149,7 +141,6 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* File Upload Section */}
         <div className="grid grid-cols-1 md:grid-cols-8 gap-8 mb-12 items-center">
           <div>
             <select
@@ -174,7 +165,6 @@ export default function HomePage() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l9 9 9-9"></path>
             </svg>
 
-            {/* Display either the file name or image preview */}
             {selectedFile ? (
               <div className="w-full flex flex-col items-center space-y-2">
                 {filePreview ? (
@@ -191,7 +181,6 @@ export default function HomePage() {
               <p className="text-1xl">Click or drag a file to this area to upload.</p>
             )}
 
-            {/* Hidden input field for file selection */}
             <input
               type="file"
               className="hidden"
@@ -199,7 +188,6 @@ export default function HomePage() {
               onChange={handleFileChange}
             />
             
-            {/* Triggering the hidden file input */}
             
           </div>
           <button
