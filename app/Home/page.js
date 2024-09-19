@@ -1,9 +1,9 @@
-import AboutUs from "@/components/AboutUs";
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
-import HeroSection from "@/components/HeroSection";
-import Services from "@/components/Services";
-import StartJourney from "@/components/StartJourney";
+import AboutUs from "@/Components/AboutUs";
+import Footer from "@/Components/Footer";
+import Header from "@/Components/Header";
+import HeroSection from "@/Components/HeroSection";
+import Services from "@/Components/Services";
+import StartJourney from "@/Components/StartJourney";
 import React from "react";
 
 export default function LandingPage() {
