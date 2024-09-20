@@ -1,6 +1,6 @@
 const HeroSection = () => {
   return (
-    <div className="relative h-[85vh] px-10 bg-gray-100">
+    <div className="relative md:h-[85vh] h-[80vh] px-10 bg-gray-100">
       {/* Hero content */}
       <div className="relative z-10 flex flex-col items-center justify-center py-24">
         <h1 className="text-4xl md:text-[60px] md:w-[70%] font-bold text-center text-darkBlue leading-[1]">
@@ -17,14 +17,14 @@ const HeroSection = () => {
 
       {/* SVG wave */}
       <svg
-        className="absolute bottom-0 left-0 w-full"
+        className="absolute bottom-0 left-0 w-full h-auto"
         xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 1440 400"
+        viewBox="0 0 1440 400" // Increase the viewBox height
       >
         <path
           fill="#ffffff"
           fillOpacity="1"
-          d="M0,256L48,240C96,224,192,192,288,181.3C384,171,480,181,576,213.3C672,245,768,299,864,288C960,277,1056,203,1152,181.3C1248,160,1344,192,1392,213.3L1440,235L1440,400L1392,400C1344,400,1248,400,1152,400C1056,400,960,400,864,400C768,400,672,400,576,400C480,400,384,400,288,400C192,400,96,400,48,400L0,400Z"
+          d="M0,192L48,165.3C96,139,192,85,288,106.7C384,128,480,224,576,245.3C672,267,768,213,864,176C960,139,1056,117,1152,112C1248,107,1344,117,1392,122.7L1440,128L1440,500L1392,500C1344,500,1248,500,1152,500C1056,500,960,500,864,500C768,500,672,500,576,500C480,500,384,500,288,500C192,500,96,500,48,500L0,500Z"
         ></path>
       </svg>
     </div>
