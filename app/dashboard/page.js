@@ -6,6 +6,10 @@ import user from '../assets/user.png';
 import more from '../assets/more.png';
 import Link from 'next/link';
 import AppContext from '../context/SelectedDataContext';
+import Footer from '../../Components/Footer'
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import nookies from 'nookies'; 
+import { auth } from '../firebase'; 
 
 
 export default function HomePage() {
@@ -21,6 +25,32 @@ export default function HomePage() {
     docType,
     setDocType,
   } = useContext(AppContext);
+
+  // const [authUser, setAuthUser] = useState(null);
+
+  //   useEffect(() => {
+  //     const auth = getAuth();
+  //     const unsubscribe = onAuthStateChanged(auth, (user) => {
+  //       if (user) {
+  //         setAuthUser(user);
+  //         nookies.set(null, 'token', user.accessToken, { path: '/' });
+  //       } else {
+  //         setAuthUser(null);
+  //         nookies.destroy(null, 'token');
+  //       }
+  //     });
+  //     return () => unsubscribe();
+  //   }, []);
+
+  //   useEffect(() => {
+  //     if (!authUser) {
+  //       window.location.href = '/UserLogin'; 
+  //     }
+  //   }, [authUser]);
+
+
+
+
   const [uploadProgress, setUploadProgress] = useState(0);  
 
   const saveToLocalStorage = (file, preview) => {
@@ -108,6 +138,7 @@ export default function HomePage() {
   const uploadStrokeOffset = strokeDasharray - (uploadProgress / 100) * strokeDasharray;
 
   return (
+    <>
     <div className="min-h-screen bg-gray-200 flex flex-col p-6 text-black ">
       <Image src={logo} className="w-10 h-10 absolute" />
       <div className="flex space-x-16 ml-6 pl-[10%] mb-20 w-full items-center">
@@ -460,5 +491,7 @@ export default function HomePage() {
         </div>
       </div>
     </div>
+    <Footer/>
+  </>
   );
 }
