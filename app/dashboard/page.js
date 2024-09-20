@@ -77,14 +77,14 @@ export default function HomePage() {
   }, [setSelectedFile, setFilePreview, setDocType]);
 
   useEffect(() => {
-    const progressCircles = document.querySelectorAll('.progress-circle');
+    const progressCircles = document.querySelectorAll(".progress-circle");
     progressCircles.forEach((circle) => {
       const radius = circle.r.baseVal.value;
       const circumference = 2 * Math.PI * radius;
       circle.style.strokeDasharray = `${circumference}`;
       circle.style.strokeDashoffset = `${circumference}`;
       setTimeout(() => {
-        circle.style.transition = 'stroke-dashoffset 2s ease-in-out';
+        circle.style.transition = "stroke-dashoffset 2s ease-in-out";
         circle.style.strokeDashoffset = `${circumference * (1 - 0.7)}`; // 70% progress
       }, 500);
     });
@@ -190,7 +190,9 @@ export default function HomePage() {
           </div>
 
           <div className="flex flex-col items-center space-y-2">
-            <span className="text-sm">Supports: PDF, JPEG, PNG, TIFF, Excel, CSV</span>
+            <span className="text-sm">
+              Supports: PDF, JPEG, PNG, TIFF, Excel, CSV
+            </span>
           </div>
 
           <div className="flex flex-col items-center space-y-2">
@@ -350,7 +352,7 @@ export default function HomePage() {
             </div>
             <button
               className="bg-blue-500 text-white px-6 py-2 rounded-md mt-4"
-              onClick={() => document.getElementById('file-upload').click()}
+              onClick={() => document.getElementById("file-upload").click()}
             >
               Upload
             </button>
@@ -368,14 +370,15 @@ export default function HomePage() {
             
           </div>
           <div>
-              <select
-                // value={selectedYear}
-                // onChange={(e) => setSelectedYear(e.target.value)}
-                className="border border-gray-300 rounded-md p-3 text-lg">
-                <option value="self">self</option>
-                <option value="one a year">one a year</option>
-                {/* Add more years as needed */}
-              </select>
+            <select
+              // value={selectedYear}
+              // onChange={(e) => setSelectedYear(e.target.value)}
+              className="border border-gray-300 rounded-md p-3 text-lg"
+            >
+              <option value="self">self</option>
+              <option value="one a year">one a year</option>
+              {/* Add more years as needed */}
+            </select>
           </div>
           {selectedFile ? (
               <div className="relative flex justify-center content-center">

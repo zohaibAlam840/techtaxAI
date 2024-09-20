@@ -1,6 +1,8 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import { AppProvider } from './context/SelectedDataContext';
+import "remixicon/fonts/remixicon.css";
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",

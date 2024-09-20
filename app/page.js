@@ -1,12 +1,14 @@
-'use client'
+"use client";
 import Image from "next/image";
-import {useRouter} from "next/navigation"
+import { useRouter } from "next/navigation";
+import LandingPage from "./Home/page";
 
 export default function Home() {
-  const route = useRouter()
+  const route = useRouter();
   return (
     <>
-     { route.push('/dashboard')}
+      <LandingPage />
+      {/* {route.push("/dashboard")} */}
     </>
   );
 }
