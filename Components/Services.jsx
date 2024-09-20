@@ -5,7 +5,7 @@ import taxImage from "../app/assets/tax.jpg";
 const Services = () => {
   return (
     <>
-      <section className="py-4 px-10">
+      <section className="py-4 md:px-10 px-5">
         <div className="text-center mb-12">
           <h2 className="text-xl text-blue-600 font-semibold">SERVICES</h2>
           <h1 className="text-4xl font-bold text-darkBlue">What We Offer</h1>
@@ -55,7 +55,7 @@ const Services = () => {
         </div>
       </section>
       {/* Tailored Solutions Section */}
-      <section className="py-8 mt-20 px-10">
+      <section className="py-8 mt-20 md:px-10 px-5">
         <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 gap-20">
           {/* Text Section */}
           <div className="flex flex-col justify-center">

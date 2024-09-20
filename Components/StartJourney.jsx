@@ -4,7 +4,7 @@ import wavy2 from "../app/assets/wavy2.jpg";
 export default function StartJourney() {
   return (
     <section
-      className="relative bg-cover bg-center h-screen flex flex-col justify-center items-center text-center my-20"
+      className=" md:px-10 px-5 relative bg-cover bg-center h-screen flex flex-col justify-center items-center text-center my-20"
       style={{ backgroundImage: `url(${wavy2.src})` }}
     >
       <div

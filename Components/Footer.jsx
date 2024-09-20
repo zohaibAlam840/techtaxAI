@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <section>
       <div
-        className="px-10 py-8 flex md:flex-row flex-col gap-10 items-center justify-evenly text-white md:h-[200px]"
+        className="md:px-10 px-5 py-8 flex md:flex-row flex-col gap-10 items-center justify-evenly text-white md:h-[200px]"
         style={{ backgroundColor: "#0A284B" }}
       >
         <div className="flex flex-col gap-2 items-center justify-center">

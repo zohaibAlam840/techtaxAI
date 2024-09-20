@@ -13,7 +13,7 @@ export default function Header() {
   return (
     <header className="">
       {/* Upper Header Section */}
-      <div className=" px-10 py-1  bg-white flex md:flex-row flex-col justify-between items-center border-b-[1px] border-slate-100	">
+      <div className=" md:px-10 px-5 py-1  bg-white flex md:flex-row flex-col justify-between items-center border-b-[1px] border-slate-100	">
         <div>
           <p className="text-xs text-gray-400">Email: joshuatchild@gmail.com</p>
         </div>
@@ -25,7 +25,7 @@ export default function Header() {
       </div>
 
       {/* Main Navigation Section */}
-      <div className=" px-10 bg-slate-50 flex justify-between items-center py-6">
+      <div className=" md:px-10 px-5 bg-slate-50 flex justify-between items-center py-6">
         {/* Site Name */}
         <div className="text-2xl font-bold text-zinc-800">TechTax</div>
 
