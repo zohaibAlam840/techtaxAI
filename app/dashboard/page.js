@@ -1,32 +1,80 @@
-"use client";
-import { useState, useEffect } from "react";
-import Image from "next/image";
-import logo from "../assets/1.png";
-import user from "../assets/user.png";
-import more from "../assets/more.png";
-import Link from "next/link";
+'use client';
+import { useContext, useState, useEffect } from 'react';
+import Image from 'next/image';
+import logo from '../assets/1.png';
+import user from '../assets/user.png';
+import more from '../assets/more.png';
+import Link from 'next/link';
+import AppContext from '../context/SelectedDataContext';
 
 //sorry
 export default function HomePage() {
-  const [selectedYear, setSelectedYear] = useState("2024");
-  const [userType, setUserType] = useState("Individual");
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [filePreview, setFilePreview] = useState(null);
+  const {
+    selectedYear,
+    setSelectedYear,
+    userType,
+    setUserType,
+    selectedFile,
+    setSelectedFile,
+    filePreview,
+    setFilePreview,
+    docType,
+    setDocType,
+  } = useContext(AppContext);
+  const [uploadProgress, setUploadProgress] = useState(0); // Progress for file upload
+
+  // Save file and preview to localStorage
+  const saveToLocalStorage = (file, preview) => {
+    localStorage.setItem(
+      'uploadedFile',
+      JSON.stringify({
+        name: file.name,
+        type: file.type,
+        preview,
+      })
+    );
+  };
+
+  // Save docType to localStorage
+  const saveDocTypeToLocalStorage = (docType) => {
+    localStorage.setItem('docType', docType);
+  };
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
 
-    if (file && file.type.startsWith("image/")) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setFilePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setFilePreview(null);
+    if (file) {
+      const fileType = file.type.split('/')[0];
+      if (fileType === 'image') {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setFilePreview(reader.result); // Store base64 string in state
+          saveToLocalStorage(file, reader.result); // Save to localStorage
+        };
+        reader.readAsDataURL(file);
+      } else {
+        setFilePreview(null); // No preview for non-image files
+        localStorage.removeItem('uploadedFile'); // Clear localStorage if invalid file
+      }
     }
   };
+
+  useEffect(() => {
+    // Retrieve file from localStorage on page load
+    const storedFile = localStorage.getItem('uploadedFile');
+    const storedDocType = localStorage.getItem('docType');
+    
+    if (storedFile) {
+      const parsedFile = JSON.parse(storedFile);
+      setSelectedFile({ name: parsedFile.name, type: parsedFile.type });
+      setFilePreview(parsedFile.preview);
+    }
+
+    if (storedDocType) {
+      setDocType(storedDocType);
+    }
+  }, [setSelectedFile, setFilePreview, setDocType]);
 
   useEffect(() => {
     const progressCircles = document.querySelectorAll(".progress-circle");
@@ -42,16 +90,37 @@ export default function HomePage() {
     });
   }, []);
 
+  const strokeDasharray = 283; // Total length of the circle stroke (based on the radius of 45)
+
+  // Handle 75% progress on file upload
+  useEffect(() => {
+    if (selectedFile) {
+      let uploadProgressValue = 0;
+      const interval = setInterval(() => {
+        if (uploadProgressValue < 75) {
+          uploadProgressValue += 1;
+          setUploadProgress(uploadProgressValue);
+        } else {
+          clearInterval(interval); // Stop at 75% for upload
+        }
+      }, 20); // Animation speed
+    } else {
+      setUploadProgress(0); // Reset to 0 when no file is selected
+    }
+  }, [selectedFile]);
+
+  const uploadStrokeOffset = strokeDasharray - (uploadProgress / 100) * strokeDasharray; // 75% on file upload
+
   return (
     <div className="min-h-screen bg-gray-200 flex flex-col p-6 text-black ">
-      <div className="flex space-x-16 pl-10 mb-20 w-full">
-        <Image src={logo} className="w-10 h-10 " />
-        <div className="flex justify-between mb-8 ">
-          <div className="flex space-x-4 ">
+      <Image src={logo} className="w-10 h-10 absolute" />
+      <div className="flex space-x-16 ml-6 pl-[10%] mb-20 w-full items-center">
+        <div className="flex flex-col md:flex-row justify-between items-center mb-4 space-y-4 md:space-y-0 md:space-x-4 w-full">
+          <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 w-full md:w-auto">
             <select
               value={selectedYear}
               onChange={(e) => setSelectedYear(e.target.value)}
-              className="border border-gray-300 rounded-md p-3 text-lg"
+              className="border border-gray-300 rounded-md p-3 text-lg w-full md:w-auto"
             >
               <option value="2024">2024</option>
               <option value="2023">2023</option>
@@ -60,15 +129,19 @@ export default function HomePage() {
             <select
               value={userType}
               onChange={(e) => setUserType(e.target.value)}
-              className="border border-gray-300 rounded-md p-3 text-lg"
+              className="border border-gray-300 rounded-md p-3 text-lg w-full md:w-auto"
             >
               <option value="Individual">Individual</option>
               <option value="Business">Business</option>
             </select>
           </div>
+
+          <div className="ml-auto pr-7">
+            <Image src={user} className="w-10 h-10" alt="User" />
+          </div>
         </div>
-        <Image src={user} className="w-10 h-10 absolute right-20" />
       </div>
+
       <div className="w-full bg-gray-200 ">
         <div className="grid grid-cols-1 md:grid-cols-8 gap-4 text-center mb-8 font-semibold p-5 bg-white text-gray-500">
           <span>Tax Documents</span>
@@ -79,17 +152,15 @@ export default function HomePage() {
             <Link href="/dashboard/taxMap">Tax Map Progress</Link>
           </span>
           <span className="text-blue-300 hover:text-blue-600 transition-all">
-            <Link href={"/dashboard/dataAudit"}>Data Audit Progress</Link>
+            <Link href={'/dashboard/dataAudit'}>Data Audit Progress</Link>
           </span>
           <span className="text-blue-300 hover:text-blue-600 transition-all">
-            <Link href={"/dashboard/eFile"}>E-file Progress</Link>
+            <Link href={'/dashboard/eFile'}>E-file Progress</Link>
           </span>
           <span>Options</span>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-8 gap-8 mb-12 items-center p-5 bg-white">
-          {/* Static Icons */}
-
+        <div className="grid grid-cols-1 md:grid-cols-8 gap-8 mb-6 items-center p-5 bg-white">
           <div className="flex flex-col items-center space-y-2">
             <svg
               className="w-8 h-8 text-gray-500"
@@ -99,16 +170,8 @@ export default function HomePage() {
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M7 16v-4a4 4 0 014-4h6"
-              ></path>
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3 12l9 9 9-9"
-              ></path>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M7 16v-4a4 4 0 014-4h6"></path>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l9 9 9-9"></path>
             </svg>
           </div>
 
@@ -121,16 +184,8 @@ export default function HomePage() {
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M7 16v-4a4 4 0 014-4h6"
-              ></path>
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M3 12l9 9 9-9"
-              ></path>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M7 16v-4a4 4 0 014-4h6"></path>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l9 9 9-9"></path>
             </svg>
           </div>
 
@@ -146,7 +201,10 @@ export default function HomePage() {
 
           <div className="flex flex-col items-center space-y-2">
             <div className="relative">
-              <svg className="w-12 h-12 text-blue-500" viewBox="0 0 100 100">
+              <svg
+                className="w-12 h-12 text-blue-500"
+                viewBox="0 0 100 100"
+              >
                 <circle
                   cx="50"
                   cy="50"
@@ -173,7 +231,10 @@ export default function HomePage() {
 
           <div className="flex flex-col items-center space-y-2">
             <div className="relative">
-              <svg className="w-12 h-12 text-blue-500" viewBox="0 0 100 100">
+              <svg
+                className="w-12 h-12 text-blue-500"
+                viewBox="0 0 100 100"
+              >
                 <circle
                   cx="50"
                   cy="50"
@@ -199,7 +260,10 @@ export default function HomePage() {
           </div>
           <div className="flex flex-col items-center space-y-2">
             <div className="relative">
-              <svg className="w-12 h-12 text-blue-500" viewBox="0 0 100 100">
+              <svg
+                className="w-12 h-12 text-blue-500"
+                viewBox="0 0 100 100"
+              >
                 <circle
                   cx="50"
                   cy="50"
@@ -230,11 +294,14 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-8 gap-8 mb-12 items-center">
-          <div>
+        <div className="grid grid-cols-1 md:grid-cols-8 gap-8 items-center justify-center content-center">
+          <div className="flex justify-center content-center">
             <select
-              // value={selectedYear}
-              // onChange={(e) => setSelectedYear(e.target.value)}
+              value={docType}
+              onChange={(e) => {
+                setDocType(e.target.value);
+                saveDocTypeToLocalStorage(e.target.value); // Save docType when it changes
+              }}
               className="border border-gray-300 rounded-md p-3 text-lg"
             >
               <option value="w2">w2</option>
@@ -252,16 +319,8 @@ export default function HomePage() {
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M7 16v-4a4 4 0 014-4h6"
-                ></path>
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 12l9 9 9-9"
-                ></path>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M7 16v-4a4 4 0 014-4h6"></path>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l9 9 9-9"></path>
               </svg>
 
               {selectedFile ? (
@@ -273,7 +332,9 @@ export default function HomePage() {
                       className="w-32 h-32 object-contain mb-2"
                     />
                   ) : (
-                    <p className="text-sm text-gray-700">{selectedFile.name}</p>
+                    <p className="text-sm text-gray-700">
+                      {selectedFile.name}
+                    </p>
                   )}
                 </div>
               ) : (
@@ -295,9 +356,6 @@ export default function HomePage() {
             >
               Upload
             </button>
-            <p className="text-sm text-gray-500 mt-2">
-              Supports: PDF, JPEG, PNG, TIFF, Excel, CSV
-            </p>
           </div>
           <div>
             {selectedFile ? (
@@ -309,6 +367,7 @@ export default function HomePage() {
                 ...
               </p>
             )}
+            
           </div>
           <div>
             <select
@@ -321,90 +380,87 @@ export default function HomePage() {
               {/* Add more years as needed */}
             </select>
           </div>
-          <div className="flex flex-col items-center space-y-2">
+          {selectedFile ? (
+              <div className="relative flex justify-center content-center">
+                <svg className="w-12 h-12 text-blue-500" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="45" stroke="currentColor" strokeWidth="10" fill="none" className="opacity-30" />
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="45"
+                    stroke="currentColor"
+                    strokeWidth="10"
+                    fill="none"
+                    strokeDasharray={strokeDasharray}
+                    strokeDashoffset={uploadStrokeOffset}
+                    className="progress-circle transition-all duration-500"
+                  />
+                </svg>
+              </div>
+            ) : (
+            <div className="flex flex-col items-center space-y-2">
             <div className="relative">
               <svg className="w-12 h-12 text-blue-500" viewBox="0 0 100 100">
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="45"
-                  stroke="currentColor"
-                  strokeWidth="10"
-                  fill="none"
-                  className="opacity-30"
-                />
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="45"
-                  stroke="currentColor"
-                  strokeWidth="10"
-                  fill="none"
-                  strokeDasharray="283"
-                  strokeDashoffset="283"
-                  className="progress-circle"
-                />
+                <circle cx="50" cy="50" r="45" stroke="currentColor" strokeWidth="10" fill="none" className="opacity-30" />
+                <circle cx="50" cy="50" r="45" stroke="currentColor" strokeWidth="10" fill="none" strokeDasharray="283" strokeDashoffset="283" />
               </svg>
             </div>
-          </div>
-
-          <div className="flex flex-col items-center space-y-2">
+          </div> 
+          )}
+                    {selectedFile ? (
+              <div className="relative flex justify-center content-center">
+                <svg className="w-12 h-12 text-blue-500" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="45" stroke="currentColor" strokeWidth="10" fill="none" className="opacity-30" />
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="45"
+                    stroke="currentColor"
+                    strokeWidth="10"
+                    fill="none"
+                    strokeDasharray={strokeDasharray}
+                    strokeDashoffset={uploadStrokeOffset}
+                    className="progress-circle transition-all duration-500"
+                  />
+                </svg>
+              </div>
+            ) : (
+            <div className="flex flex-col items-center space-y-2">
             <div className="relative">
               <svg className="w-12 h-12 text-blue-500" viewBox="0 0 100 100">
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="45"
-                  stroke="currentColor"
-                  strokeWidth="10"
-                  fill="none"
-                  className="opacity-30"
-                />
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="45"
-                  stroke="currentColor"
-                  strokeWidth="10"
-                  fill="none"
-                  strokeDasharray="283"
-                  strokeDashoffset="283"
-                  className="progress-circle"
-                />
+                <circle cx="50" cy="50" r="45" stroke="currentColor" strokeWidth="10" fill="none" className="opacity-30" />
+                <circle cx="50" cy="50" r="45" stroke="currentColor" strokeWidth="10" fill="none" strokeDasharray="283" strokeDashoffset="283" />
               </svg>
             </div>
-          </div>
-          <div className="flex flex-col items-center space-y-2">
+          </div> 
+          )}
+                    {selectedFile ? (
+              <div className="relative flex justify-center content-center">
+                <svg className="w-12 h-12 text-blue-500" viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="45" stroke="currentColor" strokeWidth="10" fill="none" className="opacity-30" />
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="45"
+                    stroke="currentColor"
+                    strokeWidth="10"
+                    fill="none"
+                    strokeDasharray={strokeDasharray}
+                    strokeDashoffset={uploadStrokeOffset}
+                    className="progress-circle transition-all duration-500"
+                  />
+                </svg>
+              </div>
+            ) : (
+            <div className="flex flex-col items-center space-y-2">
             <div className="relative">
               <svg className="w-12 h-12 text-blue-500" viewBox="0 0 100 100">
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="45"
-                  stroke="currentColor"
-                  strokeWidth="10"
-                  fill="none"
-                  className="opacity-30"
-                />
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="45"
-                  stroke="currentColor"
-                  strokeWidth="10"
-                  fill="none"
-                  strokeDasharray="283"
-                  strokeDashoffset="283"
-                  className="progress-circle"
-                />
+                <circle cx="50" cy="50" r="45" stroke="currentColor" strokeWidth="10" fill="none" className="opacity-30" />
+                <circle cx="50" cy="50" r="45" stroke="currentColor" strokeWidth="10" fill="none" strokeDasharray="283" strokeDashoffset="283" />
               </svg>
             </div>
-          </div>
-          <div className="flex flex-col items-center space-y-2">
-            <div className="relative">
-              <Image src={more} className="w-6 h-6 " />
-            </div>
-          </div>
+          </div> 
+          )}
         </div>
       </div>
     </div>
