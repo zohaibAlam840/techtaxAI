@@ -26,7 +26,6 @@ const TaxMapPage = () => {
     }
   }, [selectedFile, filePreview, docType]);
 
-  // Function to render W2 form fields
   const renderW2Fields = () => (
     <>
       <label>Employee’s Name</label>
@@ -49,7 +48,6 @@ const TaxMapPage = () => {
     </>
   );
 
-  // Function to render 1040 form fields
   const render1049Fields = () => (
     <>
       <label>Taxpayer’s Name</label>
