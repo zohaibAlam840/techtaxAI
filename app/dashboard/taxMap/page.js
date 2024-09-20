@@ -3,16 +3,13 @@ import { useContext, useState, useEffect } from 'react';
 import AppContext from '../../context/SelectedDataContext';
 
 const TaxMapPage = () => {
-  // Access data from AppContext (fallback if available)
   const { selectedFile, filePreview, docType } = useContext(AppContext);
 
-  // States for storing locally retrieved data
   const [localFileData, setLocalFileData] = useState(null);
   const [localPreview, setLocalPreview] = useState(null);
   const [localDocType, setLocalDocType] = useState(null); 
 
   useEffect(() => {
-    // Try retrieving file data from localStorage if it's not available in context
     if (!selectedFile || !filePreview || !docType) {
       const storedFile = localStorage.getItem('uploadedFile');
       const storedDocType = localStorage.getItem('docType');
@@ -29,17 +26,68 @@ const TaxMapPage = () => {
     }
   }, [selectedFile, filePreview, docType]);
 
+  // Function to render W2 form fields
+  const renderW2Fields = () => (
+    <>
+      <label>Employee’s Name</label>
+      <input type="text" className="input" placeholder="Enter Employee's Name" />
+
+      <label>Social Security Number</label>
+      <input type="text" className="input" placeholder="Enter SSN" />
+
+      <label>Employer Identification Number (EIN)</label>
+      <input type="text" className="input" placeholder="Enter EIN" />
+
+      <label>Wages, Tips, Other Compensation</label>
+      <input type="number" className="input" placeholder="Enter Wages, Tips" />
+
+      <label>Federal Income Tax Withheld</label>
+      <input type="number" className="input" placeholder="Enter Federal Income Tax" />
+
+      <label>State Income Tax</label>
+      <input type="number" className="input" placeholder="Enter State Income Tax" />
+    </>
+  );
+
+  // Function to render 1040 form fields
+  const render1049Fields = () => (
+    <>
+      <label>Taxpayer’s Name</label>
+      <input type="text" className="input" placeholder="Enter Taxpayer's Name" />
+
+      <label>Social Security Number</label>
+      <input type="text" className="input" placeholder="Enter SSN" />
+
+      <label>Filing Status</label>
+      <select className="input">
+        <option value="single">Single</option>
+        <option value="married_joint">Married Filing Jointly</option>
+        <option value="married_separate">Married Filing Separately</option>
+        <option value="head_of_household">Head of Household</option>
+      </select>
+
+      <label>Total Income</label>
+      <input type="number" className="input" placeholder="Enter Total Income" />
+
+      <label>Adjusted Gross Income (AGI)</label>
+      <input type="number" className="input" placeholder="Enter AGI" />
+
+      <label>Total Tax</label>
+      <input type="number" className="input" placeholder="Enter Total Tax" />
+
+      <label>Federal Income Tax Withheld</label>
+      <input type="number" className="input" placeholder="Enter Federal Income Tax Withheld" />
+    </>
+  );
+
   return (
     <div>
-      <h1 className='text-black bg-white'>{docType || localDocType} - File Type</h1>
-      <div className="min-h-screen p-10 bg-gray-100 flex">
+      <h1 className='text-black bg-white pl-20 pt-4 font-bold text-2xl'>{docType || localDocType} - Form Type</h1>
+      <div className="min-h-full p-10 bg-gray-100 flex">
 
-        {/* Show content if file exists either in context or local storage */}
         {(selectedFile || localFileData) ? (
-          <div className="flex w-full h-full">
-            {/* Left side: File Preview */}
+          <div className="flex w-full h-[85vh]">
             <div className="w-1/2 p-5 flex justify-center items-center bg-white shadow-lg">
-              {/* Use context preview or fallback to local preview */}
               {(filePreview || localPreview) && (
                 <div className="group relative overflow-hidden">
                   <img
@@ -51,14 +99,13 @@ const TaxMapPage = () => {
               )}
             </div>
 
-            {/* Right side: Form fields based on docType */}
             <div className="w-1/2 p-8 bg-white shadow-lg flex flex-col space-y-4">
               <h2 className="text-xl font-semibold mb-4">
                 {(docType || localDocType) === 'w2' ? 'W2 Form Fields' : '1049 Form Fields'}
               </h2>
 
-              {/* Render form fields here */}
-              {/* Add your form code here like before */}
+              {/* Render form fields based on docType */}
+              {(docType || localDocType) === 'w2' ? renderW2Fields() : render1049Fields()}
             </div>
           </div>
         ) : (
