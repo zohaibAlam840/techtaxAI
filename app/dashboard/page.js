@@ -7,7 +7,7 @@ import more from '../assets/more.png';
 import Link from 'next/link';
 import AppContext from '../context/SelectedDataContext';
 
-sorry
+
 export default function HomePage() {
   const {
     selectedYear,
@@ -82,7 +82,7 @@ export default function HomePage() {
       circle.style.strokeDashoffset = `${circumference}`;
       setTimeout(() => {
         circle.style.transition = "stroke-dashoffset 2s ease-in-out";
-        circle.style.strokeDashoffset = `${circumference * (1 - 0.7)}`;  70% progress
+        circle.style.strokeDashoffset = `${circumference * (1 - 0.7)}`; 
       }, 500);
     });
   }, []);
