@@ -7,7 +7,7 @@ import more from '../assets/more.png';
 import Link from 'next/link';
 import AppContext from '../context/SelectedDataContext';
 
-//sorry
+sorry
 export default function HomePage() {
   const {
     selectedYear,
@@ -21,9 +21,8 @@ export default function HomePage() {
     docType,
     setDocType,
   } = useContext(AppContext);
-  const [uploadProgress, setUploadProgress] = useState(0); // Progress for file upload
+  const [uploadProgress, setUploadProgress] = useState(0);  
 
-  // Save file and preview to localStorage
   const saveToLocalStorage = (file, preview) => {
     localStorage.setItem(
       'uploadedFile',
@@ -35,7 +34,6 @@ export default function HomePage() {
     );
   };
 
-  // Save docType to localStorage
   const saveDocTypeToLocalStorage = (docType) => {
     localStorage.setItem('docType', docType);
   };
@@ -49,19 +47,18 @@ export default function HomePage() {
       if (fileType === 'image') {
         const reader = new FileReader();
         reader.onloadend = () => {
-          setFilePreview(reader.result); // Store base64 string in state
-          saveToLocalStorage(file, reader.result); // Save to localStorage
+          setFilePreview(reader.result); 
+          saveToLocalStorage(file, reader.result); 
         };
         reader.readAsDataURL(file);
       } else {
-        setFilePreview(null); // No preview for non-image files
-        localStorage.removeItem('uploadedFile'); // Clear localStorage if invalid file
+        setFilePreview(null);  
+        localStorage.removeItem('uploadedFile');  
       }
     }
   };
 
   useEffect(() => {
-    // Retrieve file from localStorage on page load
     const storedFile = localStorage.getItem('uploadedFile');
     const storedDocType = localStorage.getItem('docType');
     
@@ -85,14 +82,13 @@ export default function HomePage() {
       circle.style.strokeDashoffset = `${circumference}`;
       setTimeout(() => {
         circle.style.transition = "stroke-dashoffset 2s ease-in-out";
-        circle.style.strokeDashoffset = `${circumference * (1 - 0.7)}`; // 70% progress
+        circle.style.strokeDashoffset = `${circumference * (1 - 0.7)}`;  70% progress
       }, 500);
     });
   }, []);
 
-  const strokeDasharray = 283; // Total length of the circle stroke (based on the radius of 45)
+  const strokeDasharray = 283; 
 
-  // Handle 75% progress on file upload
   useEffect(() => {
     if (selectedFile) {
       let uploadProgressValue = 0;
@@ -101,15 +97,15 @@ export default function HomePage() {
           uploadProgressValue += 1;
           setUploadProgress(uploadProgressValue);
         } else {
-          clearInterval(interval); // Stop at 75% for upload
+          clearInterval(interval);  
         }
-      }, 20); // Animation speed
+      }, 20);  
     } else {
-      setUploadProgress(0); // Reset to 0 when no file is selected
+      setUploadProgress(0);  
     }
   }, [selectedFile]);
 
-  const uploadStrokeOffset = strokeDasharray - (uploadProgress / 100) * strokeDasharray; // 75% on file upload
+  const uploadStrokeOffset = strokeDasharray - (uploadProgress / 100) * strokeDasharray;
 
   return (
     <div className="min-h-screen bg-gray-200 flex flex-col p-6 text-black ">
@@ -168,7 +164,7 @@ export default function HomePage() {
               stroke="currentColor"
               strokeWidth="2"
               viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+              xmlns="http:www.w3.org/2000/svg"
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M7 16v-4a4 4 0 014-4h6"></path>
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l9 9 9-9"></path>
@@ -182,7 +178,7 @@ export default function HomePage() {
               stroke="currentColor"
               strokeWidth="2"
               viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+              xmlns="http:www.w3.org/2000/svg"
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M7 16v-4a4 4 0 014-4h6"></path>
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l9 9 9-9"></path>
@@ -300,7 +296,7 @@ export default function HomePage() {
               value={docType}
               onChange={(e) => {
                 setDocType(e.target.value);
-                saveDocTypeToLocalStorage(e.target.value); // Save docType when it changes
+                saveDocTypeToLocalStorage(e.target.value); 
               }}
               className="border border-gray-300 rounded-md p-3 text-lg"
             >
@@ -317,7 +313,7 @@ export default function HomePage() {
                 stroke="currentColor"
                 strokeWidth="2"
                 viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
+                xmlns="http:www.w3.org/2000/svg"
               >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M7 16v-4a4 4 0 014-4h6"></path>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M3 12l9 9 9-9"></path>
@@ -371,8 +367,8 @@ export default function HomePage() {
           </div>
           <div>
             <select
-              // value={selectedYear}
-              // onChange={(e) => setSelectedYear(e.target.value)}
+               value={selectedYear}
+               onChange={(e) => setSelectedYear(e.target.value)}
               className="border border-gray-300 rounded-md p-3 text-lg"
             >
               <option value="self">self</option>
