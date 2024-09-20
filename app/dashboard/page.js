@@ -10,6 +10,7 @@ import Footer from '../../Components/Footer'
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import nookies from 'nookies'; 
 import { auth } from '../firebase'; 
+import { useRouter } from 'next/navigation';
 
 
 export default function HomePage() {
@@ -26,68 +27,32 @@ export default function HomePage() {
     setDocType,
   } = useContext(AppContext);
 
-  // const [authUser, setAuthUser] = useState(null);
-
-  //   useEffect(() => {
-  //     const auth = getAuth();
-  //     const unsubscribe = onAuthStateChanged(auth, (user) => {
-  //       if (user) {
-  //         setAuthUser(user);
-  //         nookies.set(null, 'token', user.accessToken, { path: '/' });
-  //       } else {
-  //         setAuthUser(null);
-  //         nookies.destroy(null, 'token');
-  //       }
-  //     });
-  //     return () => unsubscribe();
-  //   }, []);
-
-  //   useEffect(() => {
-  //     if (!authUser) {
-  //       window.location.href = '/UserLogin'; 
-  //     }
-  //   }, [authUser]);
-
-
-
-
+  const [authUser, setAuthUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const router = useRouter() 
   const [uploadProgress, setUploadProgress] = useState(0);  
 
-  const saveToLocalStorage = (file, preview) => {
-    localStorage.setItem(
-      'uploadedFile',
-      JSON.stringify({
-        name: file.name,
-        type: file.type,
-        preview,
-      })
-    );
-  };
-
-  const saveDocTypeToLocalStorage = (docType) => {
-    localStorage.setItem('docType', docType);
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setSelectedFile(file);
-
-    if (file) {
-      const fileType = file.type.split('/')[0];
-      if (fileType === 'image') {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setFilePreview(reader.result); 
-          saveToLocalStorage(file, reader.result); 
-        };
-        reader.readAsDataURL(file);
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setAuthUser(user);
+        nookies.set(null, 'token', user.accessToken, { path: '/' });
       } else {
-        setFilePreview(null);  
-        localStorage.removeItem('uploadedFile');  
+        setAuthUser(null);
+        nookies.destroy(null, 'token');
       }
-    }
-  };
+      setLoading(false); // Set loading to false after checking auth
+    });
+      return () => unsubscribe();
+    }, []);
 
+    useEffect(() => {
+      if (!loading && !authUser) {
+        router.push('/UserLogin');  // Redirect only after checking loading state
+      }
+    }, [authUser, loading, router]);
+    
   useEffect(() => {
     const storedFile = localStorage.getItem('uploadedFile');
     const storedDocType = localStorage.getItem('docType');
@@ -135,7 +100,52 @@ export default function HomePage() {
     }
   }, [selectedFile]);
 
+    // Show loading screen while waiting for auth state to be resolved
+    if (loading) {
+      return <div>Loading...</div>;
+    }
+
+    if (!authUser) {
+      return <div>Redirecting to login...</div>; // Fallback content in case of no user
+    }
+
   const uploadStrokeOffset = strokeDasharray - (uploadProgress / 100) * strokeDasharray;
+
+  const saveToLocalStorage = (file, preview) => {
+    localStorage.setItem(
+      'uploadedFile',
+      JSON.stringify({
+        name: file.name,
+        type: file.type,
+        preview,
+      })
+    );
+  };
+
+  const saveDocTypeToLocalStorage = (docType) => {
+    localStorage.setItem('docType', docType);
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setSelectedFile(file);
+
+    if (file) {
+      const fileType = file.type.split('/')[0];
+      if (fileType === 'image') {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setFilePreview(reader.result); 
+          saveToLocalStorage(file, reader.result); 
+        };
+        reader.readAsDataURL(file);
+      } else {
+        setFilePreview(null);  
+        localStorage.removeItem('uploadedFile');  
+      }
+    }
+  };
+
 
   return (
     <>
