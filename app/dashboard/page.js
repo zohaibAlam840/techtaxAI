@@ -82,7 +82,7 @@ export default function HomePage() {
     });
   }, []);
 
-  const strokeDasharray = 283; 
+  const strokeDasharray = 282; 
 
   useEffect(() => {
     if (selectedFile) {
